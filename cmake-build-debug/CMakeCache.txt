@@ -882,7 +882,7 @@ Boost_THREAD_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: Boost_THREAD_LIBRARY_RELEASE
 Boost_THREAD_LIBRARY_RELEASE-ADVANCED:INTERNAL=1
 //catkin environment
-CATKIN_ENV:INTERNAL=
+CATKIN_ENV:INTERNAL=/home/xcy/graph_sw_localization/src/graph_localization/cmake-build-debug/catkin_generated/env_cached.sh
 CATKIN_TEST_RESULTS_DIR:INTERNAL=/home/xcy/graph_sw_localization/src/graph_localization/cmake-build-debug/test_results
 //ADVANCED property for variable: CMAKE_AR
 CMAKE_AR-ADVANCED:INTERNAL=1

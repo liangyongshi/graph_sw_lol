@@ -13,6 +13,8 @@
 #include <sensor_msgs/Imu.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <geometry_msgs/PoseWithCovarianceStamped.h>
+#include <geometry_msgs/PoseArray.h>
+#include <visualization_msgs/MarkerArray.h>
 
 #include <nodelet/nodelet.h>
 #include <pluginlib/class_list_macros.h>
@@ -21,6 +23,22 @@
 
 #include <pclomp/ndt_omp.h>
 #include <pclomp/gicp_omp.h>
+
+
+#include <pcl/sample_consensus/sac_model_cylinder.h>
+#include <pcl/filters/passthrough.h>
+#include <pcl/segmentation/extract_clusters.h>
+#include <pcl/common/common.h>
+#include <pcl/common/centroid.h>
+#include <pcl_conversions/pcl_conversions.h>
+#include <visualization_msgs/MarkerArray.h>
+
+#include<pcl/segmentation/sac_segmentation.h>
+#include<pcl/search/search.h>
+#include<pcl/search/kdtree.h>
+#include<pcl/features/normal_3d.h>
+#include<pcl/common/common.h>
+#include <pcl/filters/extract_indices.h>
 
 #include <hdl_localization/pose_estimator.hpp>
 
@@ -58,6 +76,8 @@ public:
 
 
   void onInit() override {
+
+
     nh = getNodeHandle();
     mt_nh = getMTNodeHandle();
     private_nh = getPrivateNodeHandle();
@@ -68,7 +88,7 @@ public:
     odomLinearNoise = private_nh.param<double>("odomLinearNoise", 0.01);
     odomAngularNoise = private_nh.param<double>("odomAngularNoise", 0.01);
     gravity= private_nh.param<double>("gravity", 10.04);
-    opt_frames = private_nh.param<int>("opt_frames", 20);
+    opt_frames = private_nh.param<int>("opt_frames", 20);//图优化窗口的最大值
     odom_child_frame_id = private_nh.param<std::string>("odom_child_frame_id", "base_link");
     use_imu = private_nh.param<bool>("use_imu", true);
     invert_imu = private_nh.param<bool>("invert_imu", false);
@@ -77,14 +97,32 @@ public:
     points_sub = mt_nh.subscribe("/velodyne_points", 5, &HdlLocalizationNodelet::points_callback, this);
     globalmap_sub = nh.subscribe("/globalmap", 1, &HdlLocalizationNodelet::globalmap_callback, this);
     initialpose_sub = nh.subscribe("/initialpose", 8, &HdlLocalizationNodelet::initialpose_callback, this);
-    pose_incre_pub = nh.advertise<nav_msgs::Odometry>("/ndt/incre_odom", 30, false);
     pose_pub = nh.advertise<nav_msgs::Odometry>("/ndt/global_odom", 20, false);
+
+
+
+    z_axis_min_ =  private_nh.param<float>("z_axis_min_", 0.1);
+    z_axis_max_ = private_nh.param<float>("z_axis_max_", 0.4);  //直通滤波z轴方向的最大值
+    cluster_size_min_ = private_nh.param<int>("cluster_size_min_", 50);
+    cluster_size_max_ = private_nh.param<int>("cluster_size_max_", 300);//聚类过程中每一类的最大点云数量
+    cylinderSize= private_nh.param<int>("cylinderSize", 5); //RANSAC 拟合圆柱时inliner的数量
+    withdetection= private_nh.param<bool>("withdetection", false);//确定是否需要进行树干检测并发送目标
+    pose_array_pub_ = nh.advertise<geometry_msgs::PoseArray>("poses", 100); //发布所有类的位置
+    pubTarget=nh.advertise<geometry_msgs::PoseArray>("target", 100);//发送下一个目标位置
+    marker_array_pub_ = nh.advertise<visualization_msgs::MarkerArray>("markers", 100);//标记所有类
+
+
+
     initialize_params();
+
+
 
   }
 
 private:
   void initialize_params() {
+
+
     // intialize scan matching method
     double downsample_resolution = private_nh.param<double>("downsample_resolution", 0.1);
     std::string ndt_neighbor_search_method = private_nh.param<std::string>("ndt_neighbor_search_method", "DIRECT7");
@@ -157,6 +195,9 @@ private:
       systemInitialized= false;
 
 //**************************************************************//
+      regions_[0] = 2; regions_[1] = 3; regions_[2] = 3; regions_[3] = 3; regions_[4] = 3;
+      regions_[5] = 3; regions_[6] = 3; regions_[7] = 2; regions_[8] = 3; regions_[9] = 3;
+      regions_[10]= 3; regions_[11]= 3; regions_[12]= 3; regions_[13]= 3;
   }
 
 private:
@@ -223,25 +264,14 @@ private:
 
       auto t1 = ros::WallTime::now();
 
-//      cur_cloud=filtered;
-//      localregistration->setInputTarget(pre_cloud);
-//      localregistration->setInputSource(cur_cloud);
-//      Eigen::Matrix4f localOdom_temp;
-//      Eigen::Matrix4d localOdom;
-//      localOdom_temp = localregistration->getFinalTransformation();
-//      localOdom=localOdom_temp.cast<double>();
-
-
-
-
 
       if(!systemInitialized){
 
           resetOptimization();
 
           newgraph.add(PriorFactor<Pose3>(X(0), prevPose_, priorPoseNoise));
-          std::cout<<"initial value:"<<prevPose_.x()<<" "<<prevPose_.y()<<" "<<prevPose_.z()<<" "<<prevPose_.rotation().roll()<<" "
-          <<prevPose_.rotation().pitch()<<" "<<prevPose_.rotation().yaw()<<std::endl;
+//          std::cout<<"initial value:"<<prevPose_.x()<<" "<<prevPose_.y()<<" "<<prevPose_.z()<<" "<<prevPose_.rotation().roll()<<" "
+//          <<prevPose_.rotation().pitch()<<" "<<prevPose_.rotation().yaw()<<std::endl;
 
           //initial velocity
           prevVel_ = gtsam::Vector3(0, 0, 0);
@@ -289,7 +319,10 @@ private:
               newgraph.add(priorBias);
               // add values
               initialEstimate.insert(X(0), prevPose_);
+//              Eigen::Vector3d vel(prevVel_(0),prevVel_(1),0);// test in indoor,limit the z velocity to 0
+//              initialEstimate.insert(V(0), vel);
               initialEstimate.insert(V(0), prevVel_);
+
               initialEstimate.insert(B(0), prevBias_);
               // optimize once
               optimizer->update(newgraph, initialEstimate);
@@ -300,15 +333,15 @@ private:
           }
           gtsam::Pose3 poseFrom = gtsam::Pose3(gtsam::Rot3::Quaternion(pose_estimator->quat().w(),pose_estimator->quat().x(),pose_estimator->quat().y(),pose_estimator->quat().z()),
                                                gtsam::Point3(pose_estimator->pos()(0),pose_estimator->pos()(1),pose_estimator->pos()(2)));
-          std::cout<<"prior value:"<<poseFrom.x()<<" "<<poseFrom.y()<<" "<<poseFrom.z()<<" "<<poseFrom.rotation().roll()<<" "
-                   <<poseFrom.rotation().pitch()<<" "<<poseFrom.rotation().yaw()<<std::endl;
+//          std::cout<<"prior value:"<<poseFrom.x()<<" "<<poseFrom.y()<<" "<<poseFrom.z()<<" "<<poseFrom.rotation().roll()<<" "
+//                   <<poseFrom.rotation().pitch()<<" "<<poseFrom.rotation().yaw()<<std::endl;
 
           auto aligned = pose_estimator->correct(filtered);
 
           gtsam::Pose3 poseTo = gtsam::Pose3(gtsam::Rot3::Quaternion(pose_estimator->quat().w(),pose_estimator->quat().x(),pose_estimator->quat().y(),pose_estimator->quat().z()),
                                              gtsam::Point3(pose_estimator->pos()(0),pose_estimator->pos()(1),pose_estimator->pos()(2)));
-          std::cout<<"update value:"<<poseTo.x()<<" "<<poseTo.y()<<" "<<poseTo.z()<<" "<<poseTo.rotation().roll()<<" "
-                   <<poseTo.rotation().pitch()<<" "<<poseTo.rotation().yaw()<<std::endl;
+//          std::cout<<"update value:"<<poseTo.x()<<" "<<poseTo.y()<<" "<<poseTo.z()<<" "<<poseTo.rotation().roll()<<" "
+//                   <<poseTo.rotation().pitch()<<" "<<poseTo.rotation().yaw()<<std::endl;
 
 
 
@@ -338,32 +371,34 @@ private:
           gtsam::NavState propState_ = imuIntegratorImu_->predict(prevState_, prevBias_);
 
 
-          std::cout<<" imu integre propState:"<<propState_.pose().x()<<" "<<propState_.pose().y()<<" "<<propState_.pose().z()<<" "<<
-                   propState_.pose().rotation().roll()<<" "<<propState_.pose().rotation().pitch()<<" "<<propState_.pose().rotation().yaw()<<std::endl;
+//          std::cout<<" imu integre propState:"<<propState_.pose().x()<<" "<<propState_.pose().y()<<" "<<propState_.pose().z()<<" "<<
+//                   propState_.pose().rotation().roll()<<" "<<propState_.pose().rotation().pitch()<<" "<<propState_.pose().rotation().yaw()<<std::endl;
 
 
 
-          if(propState_.pose().z()<-0.1)
+          if(propState_.pose().z()<-0.05)
           {
               gtsam::Quaternion quat(propState_.quaternion());
               quat.normalized();
-              poseTo = gtsam::Pose3(gtsam::Rot3::Quaternion(quat.w(),quat.x(),quat.y(),quat.z()),gtsam::Point3(propState_.pose().x(),propState_.pose().y(),-0.1));
+              poseTo = gtsam::Pose3(gtsam::Rot3::Quaternion(quat.w(),quat.x(),quat.y(),quat.z()),gtsam::Point3(propState_.pose().x(),propState_.pose().y(),0));
           }
-          else if (propState_.pose().z()>0.1)
+          else if (propState_.pose().z()>0.05)
           {
 
               gtsam::Quaternion quat(propState_.quaternion());
               quat.normalized();
-              poseTo = gtsam::Pose3(gtsam::Rot3::Quaternion(quat.w(),quat.x(),quat.y(),quat.z()),gtsam::Point3(propState_.pose().x(),propState_.pose().y(),0.10));
+              poseTo = gtsam::Pose3(gtsam::Rot3::Quaternion(quat.w(),quat.x(),quat.y(),quat.z()),gtsam::Point3(propState_.pose().x(),propState_.pose().y(),0));
           }
 
-          std::cout<<"propState_.pose().z():"<<propState_.pose().z()<<std::endl;
+//          std::cout<<"propState_.pose().z():"<<propState_.pose().z()<<std::endl;
 
           noiseModel::Diagonal::shared_ptr odometryNoise = noiseModel::Diagonal::Variances((Vector(6) << odomLinearNoise, odomLinearNoise, odomLinearNoise, odomAngularNoise, odomAngularNoise, odomAngularNoise).finished());
 
           newgraph.add(BetweenFactor<Pose3>(X(key_count-1), X(key_count), poseFrom.between(poseTo), odometryNoise));
 
 
+//          Eigen::Vector3d vel(propState_.v()(0),propState_.v()(1),0);// test in indoor,limit the z velocity to 0
+//          initialEstimate.insert(V(key_count), vel); //test in indoor,limit the z velocity to 0
 
           initialEstimate.insert(X(key_count), poseTo);
           initialEstimate.insert(V(key_count), propState_.v());
@@ -419,8 +454,197 @@ private:
 
       points_pre_time = points_curr_time;
 
-//      pre_cloud=filtered;
       ++key_count;
+      if(withdetection)        //确定是否需要做树干检测并发布目标点
+      {
+//      if(comparepose(target,cur_pose))
+//          setTarget=true;     //  make sure if it is need to set new target
+
+          if(setTarget){
+              /***************pass through filter *****************/
+              pcl::IndicesPtr pc_indices(new std::vector<int>);
+              pcl::PassThrough<pcl::PointXYZI> pt;
+              pt.setInputCloud(filtered);
+              pt.setFilterFieldName("z");
+              pt.setFilterLimits(z_axis_min_, z_axis_max_);
+              pt.setFilterFieldName("x");
+              pt.setFilterLimits(-1, 8);
+              pt.setFilterFieldName("y");
+              pt.setFilterLimits(-1.5, 3);
+              pt.filter(*pc_indices);
+
+              /*** Divide the point cloud into nested circular regions ***/
+              boost::array<std::vector<int>, 8> indices_array;
+              for(int i = 0; i < pc_indices->size(); i++) {
+                  float range = 0.0;
+                  for(int j = 0; j < region_max_; j++) {
+                      float d2 = filtered->points[(*pc_indices)[i]].x * filtered->points[(*pc_indices)[i]].x +
+                                 filtered->points[(*pc_indices)[i]].y * filtered->points[(*pc_indices)[i]].y +
+                                 filtered->points[(*pc_indices)[i]].z * filtered->points[(*pc_indices)[i]].z;
+                      if(d2 > range * range && d2 <= (range+regions_[j]) * (range+regions_[j])) {
+                          indices_array[j].push_back((*pc_indices)[i]);
+                          break;
+                      }
+                      range += regions_[j];
+                  }
+              }
+              /*** Euclidean clustering ***/
+              float tolerance = 0.0;
+              std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr, Eigen::aligned_allocator<pcl::PointCloud<pcl::PointXYZI>::Ptr > > clusters;
+
+              for(int i = 0; i < region_max_; i++) {
+                  tolerance += 0.1;
+                  if(indices_array[i].size() > cluster_size_min_)
+                  {
+                      boost::shared_ptr<std::vector<int> > indices_array_ptr(new std::vector<int>(indices_array[i]));
+                      pcl::search::KdTree<pcl::PointXYZI>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZI>);
+                      tree->setInputCloud(filtered, indices_array_ptr);
+
+                      std::vector<pcl::PointIndices> cluster_indices;
+                      pcl::EuclideanClusterExtraction<pcl::PointXYZI> ec;
+                      ec.setClusterTolerance(tolerance);
+                      ec.setMinClusterSize(cluster_size_min_);
+                      ec.setMaxClusterSize(cluster_size_max_);
+                      ec.setSearchMethod(tree);
+                      ec.setInputCloud(filtered);
+                      ec.setIndices(indices_array_ptr);
+                      ec.extract(cluster_indices);
+
+                      for(std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin(); it != cluster_indices.end(); it++)
+                      {
+
+                          pcl::PointCloud<pcl::PointXYZI>::Ptr cluster(new pcl::PointCloud<pcl::PointXYZI>);
+                          for(std::vector<int>::const_iterator pit = it->indices.begin(); pit != it->indices.end(); ++pit)
+                          {
+                              cluster->points.push_back(filtered->points[*pit]);
+                          }
+                          /****************cylinder fitting*****************/
+                          pcl::SACSegmentationFromNormals<pcl::PointXYZI, pcl::Normal> seg;
+                          pcl::NormalEstimation<PointT, pcl::Normal> ne;
+                          pcl::search::KdTree<PointT>::Ptr tree (new pcl::search::KdTree<PointT> ());
+                          pcl::PointCloud<pcl::Normal>::Ptr cloud_normals (new pcl::PointCloud<pcl::Normal>);
+                          pcl::ModelCoefficients::Ptr coefficients_plane (new pcl::ModelCoefficients), coefficients_cylinder (new pcl::ModelCoefficients);
+                          pcl::PointIndices::Ptr inliers_plane (new pcl::PointIndices), inliers_cylinder (new pcl::PointIndices);
+                          pcl::ExtractIndices<PointT> extract;
+                          pcl::ExtractIndices<pcl::Normal> extract_normals;
+                          pcl::PointCloud<PointT>::Ptr cloud_filtered2 (new pcl::PointCloud<PointT>);
+                          pcl::PointCloud<pcl::Normal>::Ptr cloud_normals2 (new pcl::PointCloud<pcl::Normal>);
+                          ne.setSearchMethod (tree);
+                          ne.setInputCloud (cluster);
+                          ne.setKSearch (5);
+                          ne.compute (*cloud_normals);
+                          seg.setOptimizeCoefficients (true);
+                          seg.setModelType (pcl::SACMODEL_CYLINDER);
+                          seg.setMethodType (pcl::SAC_RANSAC);
+                          seg.setNormalDistanceWeight (0.1);
+                          seg.setMaxIterations (30);
+                          seg.setDistanceThreshold (0.05);
+                          seg.setRadiusLimits (0.07, 0.2);
+                          seg.setInputCloud (cluster);
+                          seg.setInputNormals (cloud_normals);
+                          seg.segment (*inliers_cylinder, *coefficients_cylinder);
+                          extract.setInputCloud (cluster);
+                          extract.setIndices (inliers_cylinder);
+                          extract.setNegative (false);
+                          pcl::PointCloud<PointT>::Ptr cloud_cylinder (new pcl::PointCloud<PointT> ());
+                          extract.filter (*cloud_cylinder);
+                          if (cloud_cylinder->size()>cylinderSize)
+                          {
+                              /************************************************/
+                              Eigen::Vector4f centroid;
+                              pcl::compute3DCentroid(*cloud_cylinder,centroid);
+                              if (centroid[2]>0.2 && centroid[2]<1.3)
+                              {
+                                  std::cout<<"centroid:"<<centroid<<std::endl;
+
+                                  cloud_cylinder->width = cluster->size();
+                                  cloud_cylinder->height = 1;
+                                  cloud_cylinder->is_dense = true;
+                                  clusters.push_back(cloud_cylinder);
+                              }
+
+                          }
+                      }
+                  }
+              }
+
+              geometry_msgs::PoseArray pose_array;
+              visualization_msgs::MarkerArray marker_array;
+
+              for(int i = 0; i < clusters.size(); i++) {
+                  Eigen::Vector4f centroid;
+                  pcl::compute3DCentroid(*clusters[i], centroid);
+
+                  geometry_msgs::Pose pose;
+                  pose.position.x = centroid[0];
+                  pose.position.y = centroid[1];
+                  pose.position.z = centroid[2];
+                  pose.orientation.w = 1;
+                  pose_array.poses.push_back(pose);
+
+
+                  Eigen::Vector4f min, max;
+                  pcl::getMinMax3D(*clusters[i], min, max);
+
+                  visualization_msgs::Marker marker;
+                  marker.header = points_msg->header;
+                  marker.ns = "adaptive_clustering";
+                  marker.id = i;
+                  marker.type = visualization_msgs::Marker::LINE_LIST;
+                  geometry_msgs::Point p[24];
+                  p[0].x = max[0];  p[0].y = max[1];  p[0].z = max[2];
+                  p[1].x = min[0];  p[1].y = max[1];  p[1].z = max[2];
+                  p[2].x = max[0];  p[2].y = max[1];  p[2].z = max[2];
+                  p[3].x = max[0];  p[3].y = min[1];  p[3].z = max[2];
+                  p[4].x = max[0];  p[4].y = max[1];  p[4].z = max[2];
+                  p[5].x = max[0];  p[5].y = max[1];  p[5].z = min[2];
+                  p[6].x = min[0];  p[6].y = min[1];  p[6].z = min[2];
+                  p[7].x = max[0];  p[7].y = min[1];  p[7].z = min[2];
+                  p[8].x = min[0];  p[8].y = min[1];  p[8].z = min[2];
+                  p[9].x = min[0];  p[9].y = max[1];  p[9].z = min[2];
+                  p[10].x = min[0]; p[10].y = min[1]; p[10].z = min[2];
+                  p[11].x = min[0]; p[11].y = min[1]; p[11].z = max[2];
+                  p[12].x = min[0]; p[12].y = max[1]; p[12].z = max[2];
+                  p[13].x = min[0]; p[13].y = max[1]; p[13].z = min[2];
+                  p[14].x = min[0]; p[14].y = max[1]; p[14].z = max[2];
+                  p[15].x = min[0]; p[15].y = min[1]; p[15].z = max[2];
+                  p[16].x = max[0]; p[16].y = min[1]; p[16].z = max[2];
+                  p[17].x = max[0]; p[17].y = min[1]; p[17].z = min[2];
+                  p[18].x = max[0]; p[18].y = min[1]; p[18].z = max[2];
+                  p[19].x = min[0]; p[19].y = min[1]; p[19].z = max[2];
+                  p[20].x = max[0]; p[20].y = max[1]; p[20].z = min[2];
+                  p[21].x = min[0]; p[21].y = max[1]; p[21].z = min[2];
+                  p[22].x = max[0]; p[22].y = max[1]; p[22].z = min[2];
+                  p[23].x = max[0]; p[23].y = min[1]; p[23].z = min[2];
+
+                  for(int i = 0; i < 24; i++) {
+                      marker.points.push_back(p[i]);
+                  }
+                  marker.scale.x = 0.02;
+                  marker.color.a = 1.0;
+                  marker.color.r = 0.0;
+                  marker.color.g = 1.0;
+                  marker.color.b = 0.5;
+                  marker.lifetime = ros::Duration(0.1);
+                  marker_array.markers.push_back(marker);
+              }
+
+
+              if(pose_array.poses.size()) {
+                  pose_array.header = points_msg->header;
+                  pose_array_pub_.publish(pose_array);
+
+              }
+
+              if(marker_array.markers.size()) {
+                  marker_array_pub_.publish(marker_array);
+              }
+
+
+          }
+      }
+      
+
 
       auto t2 = ros::WallTime::now();
       NODELET_INFO_STREAM("processing_time: " <<(t2 - t1).toSec()* 1000.0 << "[msec]");
@@ -502,29 +726,7 @@ private:
 
     pose_pub.publish(odom);
   }
-
-    void publish_incre_odometry(const ros::Time& stamp, const Eigen::Matrix4d& pose) {
-        // broadcast the transform over tf
-        geometry_msgs::TransformStamped odom_trans = matrix2transform(stamp, pose, odom_child_frame_id, "incre_baselink");
-        pose_incre_broadcaster.sendTransform(odom_trans);
-
-        // publish the transform
-        nav_msgs::Odometry odom;
-        odom.header.stamp = stamp;
-        odom.header.frame_id = odom_child_frame_id;
-
-        odom.pose.pose.position.x = pose(0, 3);
-        odom.pose.pose.position.y = pose(1, 3);
-        odom.pose.pose.position.z = pose(2, 3);
-        odom.pose.pose.orientation = odom_trans.transform.rotation;
-
-        odom.child_frame_id = "incre_baselink";
-        odom.twist.twist.linear.x = 0.0;
-        odom.twist.twist.linear.y = 0.0;
-        odom.twist.twist.angular.z = 0.0;
-
-        pose_incre_pub.publish(odom);
-    }
+  
 
   /**
    * @brief convert a Eigen::Matrix to TransformedStamped
@@ -580,6 +782,17 @@ private:
 //        optimizer= new gtsam::LevenbergMarquardtOptimizer optimizer(newgraph,initialEstimate,optParameters);
 
 
+    }
+
+    bool comparepose(std::vector<double>& pos1, std::vector<double>& pos2)
+    {
+      if (sqrt(pow((pos1[0]-pos2[0]),2)+pow((pos1[1]-pos2[1]),2))<transOffset && sqrt(pow((pos1[5]-pos2[5]),2))<angleOffset)
+        {
+            std::cout<<"transOffset:"<<sqrt(pow((pos1[0]-pos2[0]),2)+pow((pos1[1]-pos2[1]),2)+pow((pos1[2]-pos2[2]),2))<<std::endl;
+            std::cout<<"angleOffset:"<<sqrt(pow((pos1[5]-pos2[5]),2))<<std::endl;
+            return true;
+        }
+        return false;
     }
 
 private:
@@ -655,6 +868,21 @@ public:
   gtsam::NavState prevState_;
   gtsam::Pose3 prevPose_;
 //  gtsam::Pose3 poseFrom;
+
+
+//  pub trunk pose
+bool setTarget;
+float transOffset,angleOffset;
+std::vector<double> target,cur_pose;
+float z_axis_min_, z_axis_max_;
+const int region_max_ = 8; // Change this value to match how far you want to detect.
+int regions_[100];
+int cluster_size_min_;
+int cluster_size_max_;
+ros::Publisher pose_array_pub_,pubTarget;
+ros::Publisher marker_array_pub_;
+int cylinderSize;
+bool withdetection;
 
 
 };
