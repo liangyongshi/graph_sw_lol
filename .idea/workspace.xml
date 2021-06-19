@@ -2,24 +2,21 @@
 <project version="4">
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
-      <config projectName="hdl_localization" targetName="pcl_ros_gencfg" />
+      <config projectName="hdl_localization" targetName="roscpp_generate_messages_lisp" />
       <config projectName="hdl_localization" targetName="pcl_msgs_generate_messages_cpp" />
       <config projectName="hdl_localization" targetName="bond_generate_messages_cpp" />
-      <config projectName="hdl_localization" targetName="topic_tools_generate_messages_lisp" />
       <config projectName="hdl_localization" targetName="dynamic_reconfigure_generate_messages_cpp" />
       <config projectName="hdl_localization" targetName="tf2_msgs_generate_messages_py" />
-      <config projectName="hdl_localization" targetName="rosgraph_msgs_generate_messages_eus" />
       <config projectName="hdl_localization" targetName="roscpp_generate_messages_py" />
       <config projectName="hdl_localization" targetName="tf_generate_messages_eus" />
-      <config projectName="hdl_localization" targetName="std_msgs_generate_messages_cpp" />
-      <config projectName="hdl_localization" targetName="gtest" />
+      <config projectName="hdl_localization" targetName="std_msgs_generate_messages_nodejs" />
       <config projectName="hdl_localization" targetName="actionlib_generate_messages_eus" />
       <config projectName="hdl_localization" targetName="nodelet_generate_messages_py" />
       <config projectName="hdl_localization" targetName="dynamic_reconfigure_generate_messages_lisp" />
-      <config projectName="hdl_localization" targetName="geometry_msgs_generate_messages_nodejs" />
-      <config projectName="hdl_localization" targetName="topic_tools_generate_messages_cpp" />
+      <config projectName="hdl_localization" targetName="actionlib_msgs_generate_messages_lisp" />
+      <config projectName="hdl_localization" targetName="nodelet_generate_messages_nodejs" />
       <config projectName="hdl_localization" targetName="rosgraph_msgs_generate_messages_lisp" />
-      <config projectName="hdl_localization" targetName="globalmap_server_nodelet" />
+      <config projectName="hdl_localization" targetName="pcl_ros_gencfg" />
       <config projectName="hdl_localization" targetName="geometry_msgs_generate_messages_cpp" />
       <config projectName="hdl_localization" targetName="pcl_msgs_generate_messages_nodejs" />
       <config projectName="hdl_localization" targetName="actionlib_msgs_generate_messages_py" />
@@ -27,11 +24,9 @@
       <config projectName="hdl_localization" targetName="bond_generate_messages_eus" />
       <config projectName="hdl_localization" targetName="gmock_main" />
       <config projectName="hdl_localization" targetName="actionlib_generate_messages_lisp" />
-      <config projectName="hdl_localization" targetName="std_srvs_generate_messages_nodejs" />
-      <config projectName="hdl_localization" targetName="pcl_msgs_generate_messages_eus" />
+      <config projectName="hdl_localization" targetName="actionlib_msgs_generate_messages_eus" />
       <config projectName="hdl_localization" targetName="dynamic_reconfigure_generate_messages_eus" />
       <config projectName="hdl_localization" targetName="std_srvs_generate_messages_py" />
-      <config projectName="hdl_localization" targetName="std_srvs_generate_messages_eus" />
       <config projectName="hdl_localization" targetName="actionlib_generate_messages_py" />
       <config projectName="hdl_localization" targetName="sensor_msgs_generate_messages_py" />
       <config projectName="hdl_localization" targetName="tf_generate_messages_nodejs" />
@@ -39,56 +34,61 @@
       <config projectName="hdl_localization" targetName="topic_tools_generate_messages_nodejs" />
       <config projectName="hdl_localization" targetName="dynamic_reconfigure_gencfg" />
       <config projectName="hdl_localization" targetName="bond_generate_messages_nodejs" />
+      <config projectName="hdl_localization" targetName="run_tests" />
       <config projectName="hdl_localization" targetName="actionlib_generate_messages_nodejs" />
       <config projectName="hdl_localization" targetName="pcl_msgs_generate_messages_lisp" />
       <config projectName="hdl_localization" targetName="bond_generate_messages_py" />
-      <config projectName="hdl_localization" targetName="hdl_localization_nodelet" />
+      <config projectName="hdl_localization" targetName="std_msgs_generate_messages_cpp" />
       <config projectName="hdl_localization" targetName="roscpp_generate_messages_eus" />
-      <config projectName="hdl_localization" targetName="gmock" />
+      <config projectName="hdl_localization" targetName="rosgraph_msgs_generate_messages_nodejs" />
       <config projectName="hdl_localization" targetName="dynamic_reconfigure_generate_messages_py" />
       <config projectName="hdl_localization" targetName="geometry_msgs_generate_messages_eus" />
       <config projectName="hdl_localization" targetName="rosgraph_msgs_generate_messages_py" />
       <config projectName="hdl_localization" targetName="bond_generate_messages_lisp" />
       <config projectName="hdl_localization" targetName="topic_tools_generate_messages_eus" />
-      <config projectName="hdl_localization" targetName="roscpp_generate_messages_lisp" />
+      <config projectName="hdl_localization" targetName="std_msgs_generate_messages_py" />
       <config projectName="hdl_localization" targetName="sensor_msgs_generate_messages_lisp" />
       <config projectName="hdl_localization" targetName="sensor_msgs_generate_messages_cpp" />
       <config projectName="hdl_localization" targetName="tf_generate_messages_lisp" />
       <config projectName="hdl_localization" targetName="tf2_msgs_generate_messages_nodejs" />
+      <config projectName="hdl_localization" targetName="tf2_msgs_generate_messages_lisp" />
       <config projectName="hdl_localization" targetName="doxygen" />
+      <config projectName="hdl_localization" targetName="pcl_msgs_generate_messages_py" />
       <config projectName="hdl_localization" targetName="dynamic_reconfigure_generate_messages_nodejs" />
-      <config projectName="hdl_localization" targetName="nodelet_generate_messages_nodejs" />
-      <config projectName="hdl_localization" targetName="actionlib_generate_messages_cpp" />
-      <config projectName="hdl_localization" targetName="rosgraph_msgs_generate_messages_cpp" />
+      <config projectName="hdl_localization" targetName="geometry_msgs_generate_messages_nodejs" />
+      <config projectName="hdl_localization" targetName="topic_tools_generate_messages_cpp" />
+      <config projectName="hdl_localization" targetName="topic_tools_generate_messages_lisp" />
       <config projectName="hdl_localization" targetName="std_msgs_generate_messages_eus" />
+      <config projectName="hdl_localization" targetName="hdl_localization_nodelet" />
       <config projectName="hdl_localization" targetName="nodelet_generate_messages_cpp" />
-      <config projectName="hdl_localization" targetName="tf_generate_messages_cpp" />
       <config projectName="hdl_localization" targetName="actionlib_msgs_generate_messages_cpp" />
       <config projectName="hdl_localization" targetName="roscpp_generate_messages_nodejs" />
       <config projectName="hdl_localization" targetName="topic_tools_generate_messages_py" />
       <config projectName="hdl_localization" targetName="geometry_msgs_generate_messages_py" />
-      <config projectName="hdl_localization" targetName="rosgraph_msgs_generate_messages_nodejs" />
-      <config projectName="hdl_localization" targetName="std_msgs_generate_messages_nodejs" />
-      <config projectName="hdl_localization" targetName="std_msgs_generate_messages_py" />
+      <config projectName="hdl_localization" targetName="gtest" />
+      <config projectName="hdl_localization" targetName="pcl_msgs_generate_messages_eus" />
+      <config projectName="hdl_localization" targetName="gmock" />
       <config projectName="hdl_localization" targetName="std_srvs_generate_messages_lisp" />
       <config projectName="hdl_localization" targetName="sensor_msgs_generate_messages_eus" />
       <config projectName="hdl_localization" targetName="std_srvs_generate_messages_cpp" />
       <config projectName="hdl_localization" targetName="tf_generate_messages_py" />
+      <config projectName="hdl_localization" targetName="download_extra_data" />
+      <config projectName="hdl_localization" targetName="nodelet_topic_tools_gencfg" />
       <config projectName="hdl_localization" targetName="tf2_msgs_generate_messages_cpp" />
       <config projectName="hdl_localization" targetName="actionlib_msgs_generate_messages_nodejs" />
-      <config projectName="hdl_localization" targetName="pcl_msgs_generate_messages_py" />
+      <config projectName="hdl_localization" targetName="tf_generate_messages_cpp" />
       <config projectName="hdl_localization" targetName="std_msgs_generate_messages_lisp" />
-      <config projectName="hdl_localization" targetName="nodelet_topic_tools_gencfg" />
-      <config projectName="hdl_localization" targetName="gtest_main" />
+      <config projectName="hdl_localization" targetName="sensor_msgs_generate_messages_nodejs" />
+      <config projectName="hdl_localization" targetName="rosgraph_msgs_generate_messages_eus" />
       <config projectName="hdl_localization" targetName="clean_test_results" />
-      <config projectName="hdl_localization" targetName="tf2_msgs_generate_messages_lisp" />
-      <config projectName="hdl_localization" targetName="run_tests" />
-      <config projectName="hdl_localization" targetName="download_extra_data" />
+      <config projectName="hdl_localization" targetName="actionlib_generate_messages_cpp" />
+      <config projectName="hdl_localization" targetName="std_srvs_generate_messages_nodejs" />
+      <config projectName="hdl_localization" targetName="rosgraph_msgs_generate_messages_cpp" />
       <config projectName="hdl_localization" targetName="nodelet_generate_messages_eus" />
       <config projectName="hdl_localization" targetName="geometry_msgs_generate_messages_lisp" />
-      <config projectName="hdl_localization" targetName="sensor_msgs_generate_messages_nodejs" />
-      <config projectName="hdl_localization" targetName="actionlib_msgs_generate_messages_eus" />
-      <config projectName="hdl_localization" targetName="actionlib_msgs_generate_messages_lisp" />
+      <config projectName="hdl_localization" targetName="globalmap_server_nodelet" />
+      <config projectName="hdl_localization" targetName="std_srvs_generate_messages_eus" />
+      <config projectName="hdl_localization" targetName="gtest_main" />
       <config projectName="hdl_localization" targetName="tf2_msgs_generate_messages_eus" />
       <config projectName="hdl_localization" targetName="tests" />
     </generated>
@@ -116,8 +116,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/apps/hdl_localization_nodelet.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="507" column="62" lean-forward="true" selection-start-line="507" selection-start-column="62" selection-end-line="507" selection-end-column="62" />
+            <state relative-caret-position="308">
+              <caret line="461" column="20" lean-forward="true" selection-start-line="461" selection-start-column="20" selection-end-line="461" selection-end-column="20" />
               <folding>
                 <element signature="e#0#16#0" expanded="true" />
               </folding>
@@ -819,6 +819,7 @@
       <workItem from="1623894889057" duration="1408000" />
       <workItem from="1623978823018" duration="3354000" />
       <workItem from="1624093783762" duration="981000" />
+      <workItem from="1624105835931" duration="1070000" />
     </task>
     <task id="LOCAL-00001" summary=" add trunk detection">
       <created>1623895158487</created>
@@ -834,16 +835,23 @@
       <option name="project" value="LOCAL" />
       <updated>1624093917282</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary=" add trunk detection">
+      <created>1624105875665</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1624105875665</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="73353000" />
+    <option name="totallyTimeSpent" value="74423000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="64" y="-11" width="1857" height="1092" extended-state="7" />
+    <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14333148" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1449917" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -854,7 +862,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Database Changes" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" visible="true" weight="0.1244898" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.12142857" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="10" weight="0.32959184" />
       <window_info anchor="bottom" id="CMake" order="11" weight="0.11122449" />
@@ -943,8 +951,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/apps/hdl_localization_nodelet.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="507" column="62" lean-forward="true" selection-start-line="507" selection-start-column="62" selection-end-line="507" selection-end-column="62" />
+        <state relative-caret-position="308">
+          <caret line="461" column="20" lean-forward="true" selection-start-line="461" selection-start-column="20" selection-end-line="461" selection-end-column="20" />
           <folding>
             <element signature="e#0#16#0" expanded="true" />
           </folding>
