@@ -11,7 +11,7 @@
 
     <!-- globalmap_server_nodelet -->
     <node pkg="nodelet" type="nodelet" name="globalmap_server_nodelet" args="load hdl_localization/GlobalmapServerNodelet $(arg nodelet_manager)">
-      <param name="globalmap_pcd" value="/home/xcy/outdoor/LOAM/GlobalMap.pcd" />
+      <param name="globalmap_pcd" value="/home/xcy/fieldmap/LOAM/GlobalMap.pcd" />
       <param name="convert_utm_to_local" value="true" />
       <param name="downsample_resolution" value="0.1" />
     </node>
@@ -27,11 +27,11 @@
         <param name="use_imu" value="true" />
         <param name="invert_imu" value="false" />
         <param name="cool_time_duration" value="2.00" />
-        <param name="key_interval" value="0.05" />
-        <param name="opt_frames" value="120" />
+        <param name="key_interval" value="0.15" />
+        <param name="opt_frames" value="150" />
         <!-- ndt settings -->
         <!-- if NDT is slow for your PC, try DIRECT1 serach method, which is a bit unstable but extremely fast -->
-        <param name="ndt_neighbor_search_method" value="DIRECT7" />
+        <param name="ndt_neighbor_search_method" value="DIRECT1" />
         <param name="ndt_resolution" value="1.0" />
         <param name="downsample_resolution" value="0.15" />
         <!-- if "specify_init_pose" is true, pose estimator will be initialized with the following params -->
@@ -46,8 +46,8 @@
         <param name="init_ori_z" value="0.0" />
         <param name="imuAccNoise" value="0.1" />
         <param name="imuGyrNoise" value="0.01" />
-        <param name="gravity" value="10.04" />
-        <param name="odomLinearNoise" value="0.01" />
+        <param name="gravity" value="10.12" />
+        <param name="odomLinearNoise" value="0.008" />
         <param name="odomAngularNoise" value="0.005" />
         <param name="z_tollerance" value="0.1" />
         <param name="rotation_tollerance" value="0.1" />
