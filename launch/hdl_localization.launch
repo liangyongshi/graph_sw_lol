@@ -54,9 +54,12 @@
         <param name="imuAccNoise" value="0.1" />
         <param name="z_axis_min_" value="-0.15" />
         <param name="z_axis_max_" value="0.45" />
-        <param name="cluster_size_min_" value="40" />
-        <param name="cluster_size_max_" value="1200" />
-        <param name="cylinderSize" value="5" />
+        <param name="cluster_size_min_" value="10" />
+        <param name="cluster_size_max_" value="1000" />
+        <param name="cylinderSize" value="3" />
         <param name="withdetection" value="true" />
+        <param name="trunkCentermin" value="0.1" />
+        <param name="trunkCentermax" value="1.2" />
+        trunkCentermin
     </node>
 </launch>

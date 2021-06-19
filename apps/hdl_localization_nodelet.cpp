@@ -107,6 +107,8 @@ public:
     cluster_size_max_ = private_nh.param<int>("cluster_size_max_", 300);//聚类过程中每一类的最大点云数量
     cylinderSize= private_nh.param<int>("cylinderSize", 5); //RANSAC 拟合圆柱时inliner的数量
     withdetection= private_nh.param<bool>("withdetection", false);//确定是否需要进行树干检测并发送目标
+    trunkCentermin=private_nh.param<float>("trunkCentermin", 0.1);
+    trunkCentermax=private_nh.param<float>("trunkCentermax",1.1);//拟合的树干的中心点的高度，通过高度限制滤掉地面上的圆柱型土坡
     pose_array_pub_ = nh.advertise<geometry_msgs::PoseArray>("poses", 100); //发布所有类的位置
     pubTarget=nh.advertise<geometry_msgs::PoseArray>("target", 100);//发送下一个目标位置
     marker_array_pub_ = nh.advertise<visualization_msgs::MarkerArray>("markers", 100);//标记所有类
@@ -271,7 +273,7 @@ private:
 
           newgraph.add(PriorFactor<Pose3>(X(0), prevPose_, priorPoseNoise));
 //          std::cout<<"initial value:"<<prevPose_.x()<<" "<<prevPose_.y()<<" "<<prevPose_.z()<<" "<<prevPose_.rotation().roll()<<" "
-//          <<prevPose_.rotation().pitch()<<" "<<prevPose_.rotation().yaw()<<std::endl;
+//                   <<prevPose_.rotation().pitch()<<" "<<prevPose_.rotation().yaw()<<std::endl;
 
           //initial velocity
           prevVel_ = gtsam::Vector3(0, 0, 0);
@@ -346,17 +348,17 @@ private:
 
 
 
-           std::lock_guard<std::mutex> lock(imu_data_mutex);
-           auto imu_iter = imu_data.begin();
-           for(imu_iter; imu_iter != imu_data.end(); imu_iter++) {
-                  if(stamp < (*imu_iter)->header.stamp) {
-                      break;
-                  }
-                  const auto& acc = (*imu_iter)->linear_acceleration;
-                  const auto& gyro = (*imu_iter)->angular_velocity;
-                  imuIntegratorImu_->integrateMeasurement(gtsam::Vector3(acc.x, acc.y, acc.z),gtsam::Vector3(gyro.x, gyro.y, gyro.z), 0.01);
+          std::lock_guard<std::mutex> lock(imu_data_mutex);
+          auto imu_iter = imu_data.begin();
+          for(imu_iter; imu_iter != imu_data.end(); imu_iter++) {
+              if(stamp < (*imu_iter)->header.stamp) {
+                  break;
               }
-           imu_data.erase(imu_data.begin(),imu_iter);
+              const auto& acc = (*imu_iter)->linear_acceleration;
+              const auto& gyro = (*imu_iter)->angular_velocity;
+              imuIntegratorImu_->integrateMeasurement(gtsam::Vector3(acc.x, acc.y, acc.z),gtsam::Vector3(gyro.x, gyro.y, gyro.z), 0.01);
+          }
+          imu_data.erase(imu_data.begin(),imu_iter);
 
           gtsam::PriorFactor<gtsam::Pose3> pose_factor(X(key_count), poseTo, correctionNoise);
           newgraph.add(pose_factor);
@@ -366,7 +368,7 @@ private:
 
           newgraph.add(imu_factor);
           newgraph.add(gtsam::BetweenFactor<gtsam::imuBias::ConstantBias>(B(key_count - 1), B(key_count), gtsam::imuBias::ConstantBias(),
-                                                                              gtsam::noiseModel::Diagonal::Sigmas(sqrt(imuIntegratorImu_->deltaTij()) * noiseModelBetweenBias)));
+                                                                          gtsam::noiseModel::Diagonal::Sigmas(sqrt(imuIntegratorImu_->deltaTij()) * noiseModelBetweenBias)));
 
           gtsam::NavState propState_ = imuIntegratorImu_->predict(prevState_, prevBias_);
 
@@ -453,14 +455,14 @@ private:
       pose_pub.publish(laserOdometryROS);
 
       points_pre_time = points_curr_time;
-
       ++key_count;
+
       if(withdetection)        //确定是否需要做树干检测并发布目标点
       {
 //      if(comparepose(target,cur_pose))
 //          setTarget=true;     //  make sure if it is need to set new target
 
-          if(setTarget){
+          if(1){
               /***************pass through filter *****************/
               pcl::IndicesPtr pc_indices(new std::vector<int>);
               pcl::PassThrough<pcl::PointXYZI> pt;
@@ -537,7 +539,7 @@ private:
                           seg.setModelType (pcl::SACMODEL_CYLINDER);
                           seg.setMethodType (pcl::SAC_RANSAC);
                           seg.setNormalDistanceWeight (0.1);
-                          seg.setMaxIterations (30);
+                          seg.setMaxIterations (50);
                           seg.setDistanceThreshold (0.05);
                           seg.setRadiusLimits (0.07, 0.2);
                           seg.setInputCloud (cluster);
@@ -553,17 +555,21 @@ private:
                               /************************************************/
                               Eigen::Vector4f centroid;
                               pcl::compute3DCentroid(*cloud_cylinder,centroid);
-                              if (centroid[2]>0.2 && centroid[2]<1.3)
+                              if (centroid[2]>trunkCentermin && centroid[2]<trunkCentermax)
                               {
                                   std::cout<<"centroid:"<<centroid<<std::endl;
 
-                                  cloud_cylinder->width = cluster->size();
+                                  cloud_cylinder->width = cloud_cylinder->size();
                                   cloud_cylinder->height = 1;
                                   cloud_cylinder->is_dense = true;
                                   clusters.push_back(cloud_cylinder);
                               }
 
                           }
+//                              cluster->width = cluster->size();
+//                              cluster->height = 1;
+//                              cluster->is_dense = true;
+//                              clusters.push_back(cluster);
                       }
                   }
               }
@@ -883,6 +889,7 @@ ros::Publisher pose_array_pub_,pubTarget;
 ros::Publisher marker_array_pub_;
 int cylinderSize;
 bool withdetection;
+float trunkCentermin,trunkCentermax;
 
 
 };

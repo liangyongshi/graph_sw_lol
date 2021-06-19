@@ -2,7 +2,7 @@
 <project version="4">
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
-      <config projectName="hdl_localization" targetName="roscpp_generate_messages_lisp" />
+      <config projectName="hdl_localization" targetName="pcl_ros_gencfg" />
       <config projectName="hdl_localization" targetName="pcl_msgs_generate_messages_cpp" />
       <config projectName="hdl_localization" targetName="bond_generate_messages_cpp" />
       <config projectName="hdl_localization" targetName="topic_tools_generate_messages_lisp" />
@@ -10,15 +10,14 @@
       <config projectName="hdl_localization" targetName="tf2_msgs_generate_messages_py" />
       <config projectName="hdl_localization" targetName="roscpp_generate_messages_py" />
       <config projectName="hdl_localization" targetName="tf_generate_messages_eus" />
-      <config projectName="hdl_localization" targetName="actionlib_generate_messages_nodejs" />
-      <config projectName="hdl_localization" targetName="std_msgs_generate_messages_nodejs" />
       <config projectName="hdl_localization" targetName="actionlib_generate_messages_eus" />
       <config projectName="hdl_localization" targetName="nodelet_generate_messages_py" />
       <config projectName="hdl_localization" targetName="dynamic_reconfigure_generate_messages_lisp" />
       <config projectName="hdl_localization" targetName="actionlib_msgs_generate_messages_lisp" />
+      <config projectName="hdl_localization" targetName="sensor_msgs_generate_messages_py" />
       <config projectName="hdl_localization" targetName="nodelet_generate_messages_nodejs" />
       <config projectName="hdl_localization" targetName="rosgraph_msgs_generate_messages_lisp" />
-      <config projectName="hdl_localization" targetName="pcl_ros_gencfg" />
+      <config projectName="hdl_localization" targetName="pcl_msgs_generate_messages_py" />
       <config projectName="hdl_localization" targetName="geometry_msgs_generate_messages_cpp" />
       <config projectName="hdl_localization" targetName="pcl_msgs_generate_messages_nodejs" />
       <config projectName="hdl_localization" targetName="actionlib_msgs_generate_messages_py" />
@@ -26,25 +25,26 @@
       <config projectName="hdl_localization" targetName="bond_generate_messages_eus" />
       <config projectName="hdl_localization" targetName="gmock_main" />
       <config projectName="hdl_localization" targetName="actionlib_generate_messages_lisp" />
+      <config projectName="hdl_localization" targetName="sensor_msgs_generate_messages_eus" />
       <config projectName="hdl_localization" targetName="actionlib_msgs_generate_messages_eus" />
       <config projectName="hdl_localization" targetName="dynamic_reconfigure_generate_messages_eus" />
       <config projectName="hdl_localization" targetName="std_srvs_generate_messages_py" />
       <config projectName="hdl_localization" targetName="actionlib_generate_messages_py" />
-      <config projectName="hdl_localization" targetName="sensor_msgs_generate_messages_py" />
+      <config projectName="hdl_localization" targetName="topic_tools_generate_messages_cpp" />
       <config projectName="hdl_localization" targetName="tf_generate_messages_nodejs" />
       <config projectName="hdl_localization" targetName="nodelet_generate_messages_lisp" />
       <config projectName="hdl_localization" targetName="topic_tools_generate_messages_nodejs" />
       <config projectName="hdl_localization" targetName="dynamic_reconfigure_gencfg" />
       <config projectName="hdl_localization" targetName="bond_generate_messages_nodejs" />
-      <config projectName="hdl_localization" targetName="run_tests" />
-      <config projectName="hdl_localization" targetName="gtest" />
+      <config projectName="hdl_localization" targetName="actionlib_generate_messages_nodejs" />
       <config projectName="hdl_localization" targetName="pcl_msgs_generate_messages_lisp" />
       <config projectName="hdl_localization" targetName="bond_generate_messages_py" />
       <config projectName="hdl_localization" targetName="std_msgs_generate_messages_cpp" />
       <config projectName="hdl_localization" targetName="roscpp_generate_messages_eus" />
       <config projectName="hdl_localization" targetName="dynamic_reconfigure_generate_messages_py" />
       <config projectName="hdl_localization" targetName="geometry_msgs_generate_messages_eus" />
-      <config projectName="hdl_localization" targetName="topic_tools_generate_messages_cpp" />
+      <config projectName="hdl_localization" targetName="topic_tools_generate_messages_py" />
+      <config projectName="hdl_localization" targetName="rosgraph_msgs_generate_messages_cpp" />
       <config projectName="hdl_localization" targetName="bond_generate_messages_lisp" />
       <config projectName="hdl_localization" targetName="topic_tools_generate_messages_eus" />
       <config projectName="hdl_localization" targetName="std_msgs_generate_messages_py" />
@@ -54,22 +54,22 @@
       <config projectName="hdl_localization" targetName="tf2_msgs_generate_messages_nodejs" />
       <config projectName="hdl_localization" targetName="tf2_msgs_generate_messages_lisp" />
       <config projectName="hdl_localization" targetName="doxygen" />
-      <config projectName="hdl_localization" targetName="pcl_msgs_generate_messages_py" />
       <config projectName="hdl_localization" targetName="dynamic_reconfigure_generate_messages_nodejs" />
       <config projectName="hdl_localization" targetName="geometry_msgs_generate_messages_nodejs" />
-      <config projectName="hdl_localization" targetName="rosgraph_msgs_generate_messages_cpp" />
+      <config projectName="hdl_localization" targetName="gtest" />
       <config projectName="hdl_localization" targetName="std_msgs_generate_messages_eus" />
       <config projectName="hdl_localization" targetName="hdl_localization_nodelet" />
       <config projectName="hdl_localization" targetName="nodelet_generate_messages_cpp" />
       <config projectName="hdl_localization" targetName="actionlib_msgs_generate_messages_cpp" />
       <config projectName="hdl_localization" targetName="roscpp_generate_messages_nodejs" />
-      <config projectName="hdl_localization" targetName="topic_tools_generate_messages_py" />
+      <config projectName="hdl_localization" targetName="run_tests" />
       <config projectName="hdl_localization" targetName="geometry_msgs_generate_messages_py" />
+      <config projectName="hdl_localization" targetName="clean_test_results" />
       <config projectName="hdl_localization" targetName="rosgraph_msgs_generate_messages_nodejs" />
-      <config projectName="hdl_localization" targetName="pcl_msgs_generate_messages_eus" />
+      <config projectName="hdl_localization" targetName="std_msgs_generate_messages_nodejs" />
       <config projectName="hdl_localization" targetName="gmock" />
       <config projectName="hdl_localization" targetName="std_srvs_generate_messages_lisp" />
-      <config projectName="hdl_localization" targetName="sensor_msgs_generate_messages_eus" />
+      <config projectName="hdl_localization" targetName="pcl_msgs_generate_messages_eus" />
       <config projectName="hdl_localization" targetName="std_srvs_generate_messages_cpp" />
       <config projectName="hdl_localization" targetName="tf_generate_messages_py" />
       <config projectName="hdl_localization" targetName="download_extra_data" />
@@ -80,7 +80,7 @@
       <config projectName="hdl_localization" targetName="std_msgs_generate_messages_lisp" />
       <config projectName="hdl_localization" targetName="sensor_msgs_generate_messages_nodejs" />
       <config projectName="hdl_localization" targetName="rosgraph_msgs_generate_messages_eus" />
-      <config projectName="hdl_localization" targetName="clean_test_results" />
+      <config projectName="hdl_localization" targetName="roscpp_generate_messages_lisp" />
       <config projectName="hdl_localization" targetName="actionlib_generate_messages_cpp" />
       <config projectName="hdl_localization" targetName="std_srvs_generate_messages_nodejs" />
       <config projectName="hdl_localization" targetName="rosgraph_msgs_generate_messages_py" />
@@ -100,20 +100,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="619de3d4-32d8-4100-b32a-f515bd21eff9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/graph_localization.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apps/hdl_localization_nodelet.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/apps/hdl_localization_nodelet.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeCache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeCache.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/atomic_configure/_setup_util.py" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/atomic_configure/_setup_util.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/catkin_generated/generate_cached_setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/catkin_generated/generate_cached_setup.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/catkin_generated/installspace/_setup_util.py" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/catkin_generated/installspace/_setup_util.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/catkin_generated/stamps/hdl_localization/_setup_util.py.stamp" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/catkin_generated/stamps/hdl_localization/_setup_util.py.stamp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/devel/_setup_util.py" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/devel/_setup_util.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/launch/hdl_localization.launch" beforeDir="false" afterPath="$PROJECT_DIR$/launch/hdl_localization.launch" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
@@ -129,11 +117,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/apps/hdl_localization_nodelet.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="108" column="17" selection-start-line="108" selection-start-column="4" selection-end-line="108" selection-end-column="17" />
+            <state relative-caret-position="396">
+              <caret line="456" column="41" selection-start-line="456" selection-start-column="41" selection-end-line="456" selection-end-column="41" />
               <folding>
                 <element signature="e#0#16#0" expanded="true" />
               </folding>
@@ -141,11 +129,22 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/apps/globalmap_server_nodelet.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <folding>
+                <element signature="e#0#16#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/launch/hdl_localization.launch">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="277">
-              <caret line="42" column="43" selection-start-line="42" selection-start-column="43" selection-end-line="42" selection-end-column="43" />
+            <state relative-caret-position="726">
+              <caret line="61" column="47" selection-start-line="61" selection-start-column="47" selection-end-line="61" selection-end-column="47" />
             </state>
           </provider>
         </entry>
@@ -176,8 +175,8 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/include/hdl_localization/pose_estimator.hpp" />
-        <option value="$PROJECT_DIR$/apps/hdl_localization_nodelet.cpp" />
         <option value="$PROJECT_DIR$/launch/hdl_localization.launch" />
+        <option value="$PROJECT_DIR$/apps/hdl_localization_nodelet.cpp" />
       </list>
     </option>
   </component>
@@ -202,7 +201,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -244,6 +242,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -821,17 +820,26 @@
       <workItem from="1623765835105" duration="19148000" />
       <workItem from="1623822480428" duration="16884000" />
       <workItem from="1623893605570" duration="837000" />
+      <workItem from="1623894889057" duration="1408000" />
+      <workItem from="1623978823018" duration="3354000" />
     </task>
+    <task id="LOCAL-00001" summary=" add trunk detection">
+      <created>1623895158487</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1623895158487</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="67610000" />
+    <option name="totallyTimeSpent" value="72372000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="64" y="-11" width="1857" height="1092" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20752628" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14167129" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -842,10 +850,11 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Database Changes" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.12755102" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.12755102" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="bottom" id="Version Control" order="10" />
-      <window_info anchor="bottom" id="CMake" order="11" visible="true" weight="0.114285715" />
+      <window_info anchor="bottom" id="Version Control" order="10" weight="0.32959184" />
+      <window_info anchor="bottom" id="CMake" order="11" weight="0.11122449" />
+      <window_info anchor="bottom" id="Messages" order="12" weight="0.32959184" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -854,6 +863,50 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+              <option name="COLUMN_ORDER">
+                <list>
+                  <option value="0" />
+                  <option value="1" />
+                  <option value="2" />
+                  <option value="3" />
+                </list>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list />
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value=" add trunk detection" />
+    <option name="LAST_COMMIT_MESSAGE" value=" add trunk detection" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file:///usr/local/include/gtsam/nonlinear/Values-inl.h">
@@ -884,10 +937,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/apps/hdl_localization_nodelet.cpp">
+    <entry file="file://$PROJECT_DIR$/apps/globalmap_server_nodelet.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="108" column="17" selection-start-line="108" selection-start-column="4" selection-end-line="108" selection-end-column="17" />
+        <state>
           <folding>
             <element signature="e#0#16#0" expanded="true" />
           </folding>
@@ -896,8 +948,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/launch/hdl_localization.launch">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="277">
-          <caret line="42" column="43" selection-start-line="42" selection-start-column="43" selection-end-line="42" selection-end-column="43" />
+        <state relative-caret-position="726">
+          <caret line="61" column="47" selection-start-line="61" selection-start-column="47" selection-end-line="61" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/hdl_localization_nodelet.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="396">
+          <caret line="456" column="41" selection-start-line="456" selection-start-column="41" selection-end-line="456" selection-end-column="41" />
+          <folding>
+            <element signature="e#0#16#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
