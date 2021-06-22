@@ -37,7 +37,6 @@
 #include<pcl/search/search.h>
 #include<pcl/search/kdtree.h>
 #include<pcl/features/normal_3d.h>
-#include<pcl/common/common.h>
 #include <pcl/filters/extract_indices.h>
 
 #include <hdl_localization/pose_estimator.hpp>
@@ -63,20 +62,37 @@ using gtsam::symbol_shorthand::B; // Bias  (ax,ay,az,gx,gy,gz)
 using namespace gtsam;
 
 
+#include <actionlib/client/simple_action_client.h>
+#include <move_base_msgs/MoveBaseAction.h>
+#include <move_base_msgs/MoveBaseActionResult.h>
+#include <actionlib_msgs/GoalStatusArray.h>
+
+#include <std_msgs/String.h>
+#include <nav_msgs/Odometry.h>
+#include <geometry_msgs/PoseWithCovarianceStamped.h>
+#include <sensor_msgs/LaserScan.h>
+#include <nav_msgs/Path.h>
+#include <map_msgs/OccupancyGridUpdate.h>
+#include <tf/transform_datatypes.h>
+typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBaseClient;
+
+
+#include <cmath>
+
 namespace hdl_localization {
 
 class HdlLocalizationNodelet : public nodelet::Nodelet {
 public:
   using PointT = pcl::PointXYZI;
 
-  HdlLocalizationNodelet() {
+  HdlLocalizationNodelet():ac_(nh,"move_base", true){
+
   }
   virtual ~HdlLocalizationNodelet() {
   }
 
 
   void onInit() override {
-
 
     nh = getNodeHandle();
     mt_nh = getMTNodeHandle();
@@ -89,7 +105,7 @@ public:
     odomAngularNoise = private_nh.param<double>("odomAngularNoise", 0.01);
     gravity= private_nh.param<double>("gravity", 10.04);
     opt_frames = private_nh.param<int>("opt_frames", 20);//图优化窗口的最大值
-    odom_child_frame_id = private_nh.param<std::string>("odom_child_frame_id", "base_link");
+    odom_child_frame_id = private_nh.param<std::string>("odom_child_frame_id", "velodyne");
     use_imu = private_nh.param<bool>("use_imu", true);
     invert_imu = private_nh.param<bool>("invert_imu", false);
     key_interval = private_nh.param<float>("key_interval", 0.1);
@@ -99,8 +115,6 @@ public:
     initialpose_sub = nh.subscribe("/initialpose", 8, &HdlLocalizationNodelet::initialpose_callback, this);
     pose_pub = nh.advertise<nav_msgs::Odometry>("/ndt/global_odom", 20, false);
 
-
-
     z_axis_min_ =  private_nh.param<float>("z_axis_min_", 0.1);
     z_axis_max_ = private_nh.param<float>("z_axis_max_", 0.4);  //直通滤波z轴方向的最大值
     cluster_size_min_ = private_nh.param<int>("cluster_size_min_", 50);
@@ -109,20 +123,20 @@ public:
     withdetection= private_nh.param<bool>("withdetection", false);//确定是否需要进行树干检测并发送目标
     trunkCentermin=private_nh.param<float>("trunkCentermin", 0.1);
     trunkCentermax=private_nh.param<float>("trunkCentermax",1.1);//拟合的树干的中心点的高度，通过高度限制滤掉地面上的圆柱型土坡
-    pose_array_pub_ = nh.advertise<geometry_msgs::PoseArray>("poses", 100); //发布所有类的位置
-    pubTarget=nh.advertise<geometry_msgs::PoseArray>("target", 100);//发送下一个目标位置
+//    pose_array_pub_ = nh.advertise<geometry_msgs::PoseArray>("poses", 100); //发布所有类的位置
     marker_array_pub_ = nh.advertise<visualization_msgs::MarkerArray>("markers", 100);//标记所有类
 
+      getPoseArray(PoseArray);
+      piter=PoseArray.begin();
 
-
-    initialize_params();
-
-
+      initialize_params();
 
   }
 
 private:
   void initialize_params() {
+
+
 
 
     // intialize scan matching method
@@ -180,7 +194,7 @@ private:
       ));
     }
 //    poseFrom = gtsam::Pose3(gtsam::Rot3::Quaternion(1.0,0.0,0.0,0.0),gtsam::Point3(0.0,0.0,0.0));
-      //*****************factor graph********************//
+      /*****************factor graph********************/
       boost::shared_ptr<gtsam::PreintegrationParams> p = gtsam::PreintegrationParams::MakeSharedU(gravity);
       p->accelerometerCovariance  = gtsam::Matrix33::Identity(3,3) * pow(imuAccNoise, 2); // acc white noise in continuous
       p->gyroscopeCovariance      = gtsam::Matrix33::Identity(3,3) * pow(imuGyrNoise, 2); // gyro white noise in continuous
@@ -192,14 +206,17 @@ private:
       correctionNoise = gtsam::noiseModel::Isotropic::Sigma(6, 1); // meter
       noiseModelBetweenBias = (gtsam::Vector(6) << 3.99395e-03, 3.99395e-03, 3.99395e-03, 1.56363e-03, 1.56363e-03, 1.56363e-03).finished();
       imuIntegratorImu_ = new gtsam::PreintegratedImuMeasurements(p, prior_imu_bias);
-
       key_count=0;
       systemInitialized= false;
-
-//**************************************************************//
+/********************cluster******************************/
       regions_[0] = 2; regions_[1] = 3; regions_[2] = 3; regions_[3] = 3; regions_[4] = 3;
       regions_[5] = 3; regions_[6] = 3; regions_[7] = 2; regions_[8] = 3; regions_[9] = 3;
       regions_[10]= 3; regions_[11]= 3; regions_[12]= 3; regions_[13]= 3;
+      //参考论文《Online Learning for 3D LiDAR-based Human Detection: Experimental
+      //Analysis of Point Cloud Clustering and Classification Methods》
+/*******************path planning**movebase********************/
+      while(!ac_.waitForServer(ros::Duration(5.0)));  //启动movebase
+
   }
 
 private:
@@ -246,8 +263,6 @@ private:
       const auto& stamp = points_msg->header.stamp;
       pcl::PointCloud<PointT>::Ptr pcl_cloud(new pcl::PointCloud<PointT>());
       pcl::fromROSMsg(*points_msg, *pcl_cloud);
-
-
 
       if(pcl_cloud->empty()) {
           NODELET_ERROR("cloud is empty!!");
@@ -300,8 +315,6 @@ private:
           return;
       }
       else{
-
-
 
           if(key_count==opt_frames)
           {
@@ -457,12 +470,20 @@ private:
       points_pre_time = points_curr_time;
       ++key_count;
 
+
+
       if(withdetection)        //确定是否需要做树干检测并发布目标点
       {
-//      if(comparepose(target,cur_pose))
-//          setTarget=true;     //  make sure if it is need to set new target
+          cur_pose[0]=prevPose_.x();
+          cur_pose[1]=prevPose_.y();
+          cur_pose[2]=prevPose_.rotation().yaw();
+
+
+          if(comparepose(target,cur_pose)) {setTarget=true;}     //  make sure if it is need to set new target
 
           if(1){
+
+
               /***************pass through filter *****************/
               pcl::IndicesPtr pc_indices(new std::vector<int>);
               pcl::PassThrough<pcl::PointXYZI> pt;
@@ -539,7 +560,7 @@ private:
                           seg.setModelType (pcl::SACMODEL_CYLINDER);
                           seg.setMethodType (pcl::SAC_RANSAC);
                           seg.setNormalDistanceWeight (0.1);
-                          seg.setMaxIterations (50);
+                          seg.setMaxIterations (30);
                           seg.setDistanceThreshold (0.05);
                           seg.setRadiusLimits (0.07, 0.2);
                           seg.setInputCloud (cluster);
@@ -557,8 +578,7 @@ private:
                               pcl::compute3DCentroid(*cloud_cylinder,centroid);
                               if (centroid[2]>trunkCentermin && centroid[2]<trunkCentermax)
                               {
-                                  std::cout<<"centroid:"<<centroid<<std::endl;
-
+//                                  std::cout<<"centroid:"<<centroid<<std::endl;
                                   cloud_cylinder->width = cloud_cylinder->size();
                                   cloud_cylinder->height = 1;
                                   cloud_cylinder->is_dense = true;
@@ -586,6 +606,7 @@ private:
                   pose.position.y = centroid[1];
                   pose.position.z = centroid[2];
                   pose.orientation.w = 1;
+
                   pose_array.poses.push_back(pose);
 
 
@@ -636,21 +657,35 @@ private:
               }
 
 
-              if(pose_array.poses.size()) {
-                  pose_array.header = points_msg->header;
-                  pose_array_pub_.publish(pose_array);
+//              if(pose_array.poses.size()) {
+//                  pose_array.header = points_msg->header;
+//                  pose_array_pub_.publish(pose_array);
+//
+//              } //这段是发布所有类的位置
 
-              }
 
               if(marker_array.markers.size()) {
                   marker_array_pub_.publish(marker_array);
               }
 
+              if(setTarget)
+              {
+                  setTarget=false;
+                  if(PoseArray.size()>0 && piter!=PoseArray.end())
+                  {
+                      target.clear();
+                      target.assign((*piter).begin(),(*piter).end());
+                      std::cout<<""<<target[0]<<" "<<target[1]<<" "<<target[2]<<std::endl;
+                      setGoal(target[0],target[1],target[2]);
+                      ac_.sendGoal(goal_);
+                      ROS_INFO("New goal set");
+                      piter++;
+                  }
+              }
+
 
           }
       }
-      
-
 
       auto t2 = ros::WallTime::now();
       NODELET_INFO_STREAM("processing_time: " <<(t2 - t1).toSec()* 1000.0 << "[msec]");
@@ -786,19 +821,69 @@ private:
 //        gtsam::Values NewGraphValues;
 //        initialEstimate = NewGraphValues;
 //        optimizer= new gtsam::LevenbergMarquardtOptimizer optimizer(newgraph,initialEstimate,optParameters);
-
-
     }
 
     bool comparepose(std::vector<double>& pos1, std::vector<double>& pos2)
     {
-      if (sqrt(pow((pos1[0]-pos2[0]),2)+pow((pos1[1]-pos2[1]),2))<transOffset && sqrt(pow((pos1[5]-pos2[5]),2))<angleOffset)
+      if (sqrt(pow((pos1[0]-pos2[0]),2)+pow((pos1[1]-pos2[1]),2))<transOffset && sqrt(pow((pos1[2]-pos2[2]),2))<angleOffset)
         {
             std::cout<<"transOffset:"<<sqrt(pow((pos1[0]-pos2[0]),2)+pow((pos1[1]-pos2[1]),2)+pow((pos1[2]-pos2[2]),2))<<std::endl;
-            std::cout<<"angleOffset:"<<sqrt(pow((pos1[5]-pos2[5]),2))<<std::endl;
+            std::cout<<"angleOffset:"<<sqrt(pow((pos1[2]-pos2[2]),2))<<std::endl;
             return true;
         }
         return false;
+    }
+    int sendGoal(const move_base_msgs::MoveBaseGoal& goal)
+    {
+        ac_.sendGoal(goal);
+        ROS_INFO("New goal set");
+        return 1;
+    }
+    void setGoal(double& goal_position_x, double& goal_position_y, double& goal_pose_yaw)
+    {
+        goal_.target_pose.header.frame_id = "map";
+        goal_.target_pose.header.stamp = ros::Time::now();
+        goal_.target_pose.pose.position.x = goal_position_x;
+        goal_.target_pose.pose.position.y = goal_position_y;
+        geometry_msgs::Quaternion odom_quat = tf::createQuaternionMsgFromRollPitchYaw(0, 0, goal_pose_yaw);
+        goal_.target_pose.pose.orientation = odom_quat;
+    }
+    void setInitialPose(double initial_pose_x, double initial_pose_y, double initial_pose_yaw)
+    {
+        initial_pose_.header.stamp = ros::Time::now();
+        initial_pose_.header.frame_id = "map";
+        initial_pose_.pose.pose.position.x = initial_pose_x;
+        initial_pose_.pose.pose.position.y = initial_pose_y;
+        geometry_msgs::Quaternion odom_quat = tf::createQuaternionMsgFromRollPitchYaw(0, 0, initial_pose_yaw);
+        initial_pose_.pose.pose.orientation = odom_quat;
+    }
+
+    void getPoseArray(std::vector<std::vector<double>> & targetPoseArray)
+    {
+        const std::string pose_addr{"/home/xcy/graph_sw_localization/src/graph_localization/config/target.txt"};
+        std::ifstream input_file(pose_addr.c_str());
+        targetPoseArray.clear();
+        if(input_file.is_open())
+        {
+            std::string str;
+            geometry_msgs::Pose pose3d;
+            std::vector<double> pose2d(3);
+
+            while(getline(input_file,str)&&!str.empty())
+            {
+                std::istringstream stringGet(str);
+                stringGet>>pose3d.position.x>>pose3d.position.y>>pose3d.position.z>>pose3d.orientation.x
+                >>pose3d.orientation.y>>pose3d.orientation.z>>pose3d.orientation.w;
+                double siny_cosp = 2 * (pose3d.orientation.w * pose3d.orientation.z + pose3d.orientation.x * pose3d.orientation.y);
+                double cosy_cosp = 1 - 2 * (pose3d.orientation.y * pose3d.orientation.y + pose3d.orientation.z * pose3d.orientation.z);
+                double yaw = std::atan2(siny_cosp, cosy_cosp);
+                pose2d[0]=pose3d.position.x;
+                pose2d[1]=pose3d.position.y;
+                pose2d[2]=yaw;
+                targetPoseArray.push_back(pose2d);
+            }
+            input_file.close();
+        }
     }
 
 private:
@@ -847,7 +932,9 @@ private:
   // processing time buffer
   boost::circular_buffer<double> processing_time;
 
-  // ********************the followings are for graph optimization*********************
+
+
+    // ********************the followings are for graph optimization*********************
 public:
   bool firstkey=true;
   NonlinearFactorGraph newgraph;
@@ -878,8 +965,10 @@ public:
 
 //  pub trunk pose
 bool setTarget;
-float transOffset,angleOffset;
-std::vector<double> target,cur_pose;
+float transOffset=0.1;
+float angleOffset=0.01;
+std::vector<double> target{0,0,0};
+std::vector<double> cur_pose{0,0,0};
 float z_axis_min_, z_axis_max_;
 const int region_max_ = 8; // Change this value to match how far you want to detect.
 int regions_[100];
@@ -891,6 +980,13 @@ int cylinderSize;
 bool withdetection;
 float trunkCentermin,trunkCentermax;
 
+std::vector<std::vector<double>> PoseArray{};
+std::vector<std::vector<double>>::iterator piter;
+
+private:
+   MoveBaseClient ac_;
+   move_base_msgs::MoveBaseGoal goal_;
+   geometry_msgs::PoseWithCovarianceStamped initial_pose_;
 
 };
 

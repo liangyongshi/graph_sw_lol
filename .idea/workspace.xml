@@ -5,10 +5,12 @@
       <config projectName="hdl_localization" targetName="roscpp_generate_messages_lisp" />
       <config projectName="hdl_localization" targetName="pcl_msgs_generate_messages_cpp" />
       <config projectName="hdl_localization" targetName="bond_generate_messages_cpp" />
+      <config projectName="hdl_localization" targetName="topic_tools_generate_messages_lisp" />
       <config projectName="hdl_localization" targetName="dynamic_reconfigure_generate_messages_cpp" />
       <config projectName="hdl_localization" targetName="tf2_msgs_generate_messages_py" />
       <config projectName="hdl_localization" targetName="roscpp_generate_messages_py" />
       <config projectName="hdl_localization" targetName="tf_generate_messages_eus" />
+      <config projectName="hdl_localization" targetName="actionlib_generate_messages_nodejs" />
       <config projectName="hdl_localization" targetName="std_msgs_generate_messages_nodejs" />
       <config projectName="hdl_localization" targetName="actionlib_generate_messages_eus" />
       <config projectName="hdl_localization" targetName="nodelet_generate_messages_py" />
@@ -35,15 +37,14 @@
       <config projectName="hdl_localization" targetName="dynamic_reconfigure_gencfg" />
       <config projectName="hdl_localization" targetName="bond_generate_messages_nodejs" />
       <config projectName="hdl_localization" targetName="run_tests" />
-      <config projectName="hdl_localization" targetName="actionlib_generate_messages_nodejs" />
+      <config projectName="hdl_localization" targetName="gtest" />
       <config projectName="hdl_localization" targetName="pcl_msgs_generate_messages_lisp" />
       <config projectName="hdl_localization" targetName="bond_generate_messages_py" />
       <config projectName="hdl_localization" targetName="std_msgs_generate_messages_cpp" />
       <config projectName="hdl_localization" targetName="roscpp_generate_messages_eus" />
-      <config projectName="hdl_localization" targetName="rosgraph_msgs_generate_messages_nodejs" />
       <config projectName="hdl_localization" targetName="dynamic_reconfigure_generate_messages_py" />
       <config projectName="hdl_localization" targetName="geometry_msgs_generate_messages_eus" />
-      <config projectName="hdl_localization" targetName="rosgraph_msgs_generate_messages_py" />
+      <config projectName="hdl_localization" targetName="topic_tools_generate_messages_cpp" />
       <config projectName="hdl_localization" targetName="bond_generate_messages_lisp" />
       <config projectName="hdl_localization" targetName="topic_tools_generate_messages_eus" />
       <config projectName="hdl_localization" targetName="std_msgs_generate_messages_py" />
@@ -56,8 +57,7 @@
       <config projectName="hdl_localization" targetName="pcl_msgs_generate_messages_py" />
       <config projectName="hdl_localization" targetName="dynamic_reconfigure_generate_messages_nodejs" />
       <config projectName="hdl_localization" targetName="geometry_msgs_generate_messages_nodejs" />
-      <config projectName="hdl_localization" targetName="topic_tools_generate_messages_cpp" />
-      <config projectName="hdl_localization" targetName="topic_tools_generate_messages_lisp" />
+      <config projectName="hdl_localization" targetName="rosgraph_msgs_generate_messages_cpp" />
       <config projectName="hdl_localization" targetName="std_msgs_generate_messages_eus" />
       <config projectName="hdl_localization" targetName="hdl_localization_nodelet" />
       <config projectName="hdl_localization" targetName="nodelet_generate_messages_cpp" />
@@ -65,7 +65,7 @@
       <config projectName="hdl_localization" targetName="roscpp_generate_messages_nodejs" />
       <config projectName="hdl_localization" targetName="topic_tools_generate_messages_py" />
       <config projectName="hdl_localization" targetName="geometry_msgs_generate_messages_py" />
-      <config projectName="hdl_localization" targetName="gtest" />
+      <config projectName="hdl_localization" targetName="rosgraph_msgs_generate_messages_nodejs" />
       <config projectName="hdl_localization" targetName="pcl_msgs_generate_messages_eus" />
       <config projectName="hdl_localization" targetName="gmock" />
       <config projectName="hdl_localization" targetName="std_srvs_generate_messages_lisp" />
@@ -83,7 +83,7 @@
       <config projectName="hdl_localization" targetName="clean_test_results" />
       <config projectName="hdl_localization" targetName="actionlib_generate_messages_cpp" />
       <config projectName="hdl_localization" targetName="std_srvs_generate_messages_nodejs" />
-      <config projectName="hdl_localization" targetName="rosgraph_msgs_generate_messages_cpp" />
+      <config projectName="hdl_localization" targetName="rosgraph_msgs_generate_messages_py" />
       <config projectName="hdl_localization" targetName="nodelet_generate_messages_eus" />
       <config projectName="hdl_localization" targetName="geometry_msgs_generate_messages_lisp" />
       <config projectName="hdl_localization" targetName="globalmap_server_nodelet" />
@@ -99,7 +99,16 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="619de3d4-32d8-4100-b32a-f515bd21eff9" name="Default Changelist" comment="" />
+    <list default="true" id="619de3d4-32d8-4100-b32a-f515bd21eff9" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/globalmap_server_nodelet.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/apps/globalmap_server_nodelet.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/hdl_localization_nodelet.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/apps/hdl_localization_nodelet.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeCache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeCache.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/launch/hdl_localization.launch" beforeDir="false" afterPath="$PROJECT_DIR$/launch/hdl_localization.launch" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.xml" beforeDir="false" afterPath="$PROJECT_DIR$/package.xml" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -116,19 +125,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/apps/hdl_localization_nodelet.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="308">
-              <caret line="461" column="20" lean-forward="true" selection-start-line="461" selection-start-column="20" selection-end-line="461" selection-end-column="20" />
-              <folding>
-                <element signature="e#0#16#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/apps/globalmap_server_nodelet.cpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
+            <state relative-caret-position="638">
+              <caret line="666" column="47" lean-forward="true" selection-start-line="666" selection-start-column="47" selection-end-line="666" selection-end-column="47" />
               <folding>
                 <element signature="e#0#16#0" expanded="true" />
               </folding>
@@ -139,8 +137,21 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/launch/hdl_localization.launch">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1342">
-              <caret line="61" column="47" selection-start-line="61" selection-start-column="47" selection-end-line="61" selection-end-column="47" />
+            <state relative-caret-position="596">
+              <caret line="60" column="47" selection-start-line="60" selection-start-column="47" selection-end-line="60" selection-end-column="47" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/apps/globalmap_server_nodelet.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="434">
+              <caret line="128" selection-start-line="128" selection-end-line="128" />
+              <folding>
+                <element signature="e#0#16#0" expanded="true" />
+                <element signature="e#610#704#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -149,19 +160,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>propState_</find>
-      <find>publish_odometry</find>
-      <find>downsample</find>
-      <find>voxelgrid</find>
-      <find>downsample_filter</find>
-      <find>z_axis_min_</find>
-      <find>imuAccNoise</find>
-      <find>cluster_size_min_</find>
-      <find>clusters</find>
-      <find>regions_</find>
-      <find>region_max_</find>
       <find>cysacrate</find>
+      <find>initialize_params</find>
+      <find>fin</find>
+      <find>yaml_path_</find>
+      <find>pgm_path_</find>
+      <find>map_name_</find>
+      <find>map_resp_</find>
       <find>pose_array_pub_</find>
+      <find>pose_array</find>
+      <find>actionlib</find>
+      <find>com</find>
+      <find>roscpp</find>
+      <find>MoveBaseClient</find>
+      <find>odom</find>
+      <find>pub_once_cb</find>
+      <find>targetPose</find>
+      <find>targetPoseArray</find>
+      <find>transOffset</find>
+      <find>iter</find>
+      <find>target</find>
+      <find>cur_pose</find>
+      <find>getPoseArray</find>
+      <find>comparepose</find>
+      <find>sendGoal</find>
+      <find>goal_</find>
+      <find>setGoal</find>
+      <find>map</find>
+      <find>velodyne</find>
+      <find>publish_odometry</find>
+      <find>odom_child_frame_id</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -171,8 +199,12 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/include/hdl_localization/pose_estimator.hpp" />
-        <option value="$PROJECT_DIR$/launch/hdl_localization.launch" />
+        <option value="$PROJECT_DIR$/package.xml" />
+        <option value="$PROJECT_DIR$/CMakeLists.txt" />
+        <option value="$PROJECT_DIR$/apps/globalmap_server_nodelet.cpp" />
+        <option value="$PROJECT_DIR$/launch/haribit_move_base.launch" />
         <option value="$PROJECT_DIR$/apps/hdl_localization_nodelet.cpp" />
+        <option value="$PROJECT_DIR$/launch/hdl_localization.launch" />
       </list>
     </option>
   </component>
@@ -187,8 +219,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="160" />
-    <option name="y" value="122" />
+    <option name="x" value="1985" />
+    <option name="y" value="6" />
     <option name="width" value="1853" />
     <option name="height" value="1076" />
   </component>
@@ -197,6 +229,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -234,17 +267,22 @@
               <item name="graph_localization" type="462c0819:PsiDirectoryNode" />
               <item name="launch" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="hdl_localization" type="b2602c69:ProjectViewProjectNode" />
+              <item name="graph_localization" type="47feb1d3:ProjectViewModuleNode" />
+              <item name="graph_localization" type="462c0819:PsiDirectoryNode" />
+              <item name="map" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$USER_HOME$/CLionProjects/untitled2" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
   </component>
@@ -819,7 +857,16 @@
       <workItem from="1623894889057" duration="1408000" />
       <workItem from="1623978823018" duration="3354000" />
       <workItem from="1624093783762" duration="981000" />
-      <workItem from="1624105835931" duration="1070000" />
+      <workItem from="1624105835931" duration="3520000" />
+      <workItem from="1624111442507" duration="2047000" />
+      <workItem from="1624165374394" duration="10032000" />
+      <workItem from="1624177183590" duration="17952000" />
+      <workItem from="1624238768170" duration="5312000" />
+      <workItem from="1624251062279" duration="28000" />
+      <workItem from="1624255905073" duration="10279000" />
+      <workItem from="1624276816857" duration="7246000" />
+      <workItem from="1624324062690" duration="9103000" />
+      <workItem from="1624341131663" duration="2963000" />
     </task>
     <task id="LOCAL-00001" summary=" add trunk detection">
       <created>1623895158487</created>
@@ -846,12 +893,35 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="74423000" />
+    <option name="totallyTimeSpent" value="141835000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
+    <frame x="1985" y="-4" width="1855" height="1084" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1449917" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.13724405" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32959184" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Database Changes" order="7" />
+      <window_info anchor="bottom" id="Terminal" order="8" visible="true" weight="0.0877551" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" order="10" weight="0.32959184" />
+      <window_info anchor="bottom" id="CMake" order="11" weight="0.053061225" />
+      <window_info anchor="bottom" id="Messages" order="12" weight="0.32959184" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Database" order="3" />
+    </layout>
+    <layout-to-restore>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.13447703" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -862,16 +932,16 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Database Changes" order="7" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.12142857" />
+      <window_info anchor="bottom" id="Terminal" order="8" visible="true" weight="0.06836735" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="10" weight="0.32959184" />
-      <window_info anchor="bottom" id="CMake" order="11" weight="0.11122449" />
+      <window_info anchor="bottom" id="CMake" order="11" weight="0.053061225" />
       <window_info anchor="bottom" id="Messages" order="12" weight="0.32959184" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Database" order="3" />
-    </layout>
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -928,20 +998,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/package.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="19" column="33" selection-start-line="19" selection-start-column="33" selection-end-line="19" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="462">
-          <caret line="21" column="9" lean-forward="true" selection-start-line="21" selection-start-column="9" selection-end-line="21" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/include/hdl_localization/pose_estimator.hpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="766">
@@ -949,29 +1005,74 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/apps/hdl_localization_nodelet.cpp">
+    <entry file="file://$PROJECT_DIR$/actionlib.txt" />
+    <entry file="file:///opt/ros/kinetic/share/catkin/cmake/catkin_package.cmake">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="461" column="20" lean-forward="true" selection-start-line="461" selection-start-column="20" selection-end-line="461" selection-end-column="20" />
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="187">
+          <caret line="223" selection-start-line="223" selection-end-line="223" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///opt/ros/kinetic/include/actionlib/client/simple_action_client.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-88">
+          <caret line="71" column="24" selection-start-line="71" selection-start-column="6" selection-end-line="71" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="20" column="34" selection-start-line="20" selection-start-column="34" selection-end-line="20" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1232">
+          <caret line="56" column="29" selection-start-line="56" selection-start-column="29" selection-end-line="56" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simpleNav.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1936">
+          <caret line="103" column="37" selection-start-line="103" selection-start-column="37" selection-end-line="103" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/launch/haribit_move_base.launch">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="66">
+          <caret line="3" column="98" selection-start-line="3" selection-start-column="98" selection-end-line="3" selection-end-column="98" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/apps/globalmap_server_nodelet.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
+        <state relative-caret-position="434">
+          <caret line="128" selection-start-line="128" selection-end-line="128" />
           <folding>
             <element signature="e#0#16#0" expanded="true" />
+            <element signature="e#610#704#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/launch/hdl_localization.launch">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1342">
-          <caret line="61" column="47" selection-start-line="61" selection-start-column="47" selection-end-line="61" selection-end-column="47" />
+        <state relative-caret-position="596">
+          <caret line="60" column="47" selection-start-line="60" selection-start-column="47" selection-end-line="60" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/hdl_localization_nodelet.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="638">
+          <caret line="666" column="47" lean-forward="true" selection-start-line="666" selection-start-column="47" selection-end-line="666" selection-end-column="47" />
+          <folding>
+            <element signature="e#0#16#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

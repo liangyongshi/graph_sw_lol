@@ -33,7 +33,7 @@ CMake Error at /usr/lib/x86_64-linux-gnu/cmake/pcl/PCLConfig.cmake:45 (message):
 Call Stack (most recent call first):
   /usr/lib/x86_64-linux-gnu/cmake/pcl/PCLConfig.cmake:498 (pcl_report_not_found)
   /usr/lib/x86_64-linux-gnu/cmake/pcl/PCLConfig.cmake:654 (find_external_library)
-  CMakeLists.txt:25 (find_package)
+  CMakeLists.txt:27 (find_package)
 
 
 -- Configuring incomplete, errors occurred!

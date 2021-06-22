@@ -20,6 +20,8 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   sensor_msgs
   ndt_omp
+  map_server
+  actionlib
 )
 
 find_package(PCL 1.7 REQUIRED)
@@ -27,6 +29,13 @@ find_package(GTSAM REQUIRED QUIET)
 include_directories(${PCL_INCLUDE_DIRS})
 link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})
+
+pkg_check_modules(NEW_YAMLCPP yaml-cpp>=0.5)
+if(NEW_YAMLCPP_FOUND)
+    add_definitions(-DHAVE_NEW_YAMLCPP)
+endif(NEW_YAMLCPP_FOUND)
+pkg_check_modules(YAML REQUIRED yaml-cpp)
+message(STATUS "YAML=${YAML_INCLUDE_DIRS} ${YAML_LIBRARIES}")
 
 message(STATUS "PCL_INCLUDE_DIRS:" ${PCL_INCLUDE_DIRS})
 message(STATUS "PCL_LIBRARY_DIRS:" ${PCL_LIBRARY_DIRS})
@@ -44,6 +53,8 @@ endif()
 catkin_package(
   INCLUDE_DIRS include
   DEPENDS PCL GTSAM
+  DEPENDS YAML
+  CATKIN_DEPENDS actionlib tf
 #  LIBRARIES hdl_scan_matching_odometry
 #  CATKIN_DEPENDS pcl_ros roscpp sensor_msgs
 #  DEPENDS system_lib
@@ -56,6 +67,7 @@ include_directories(include)
 include_directories(
    ${GTSAM_INCLUDE_DIR}
   ${catkin_INCLUDE_DIRS}
+  ${YAML_INCLUDE_DIRS}
 )
 
 # nodelets
@@ -63,6 +75,7 @@ add_library(hdl_localization_nodelet apps/hdl_localization_nodelet.cpp)
 target_link_libraries(hdl_localization_nodelet
   ${catkin_LIBRARIES}
   ${PCL_LIBRARIES}
+  yaml-cpp
   gtsam
   tbb
 )
@@ -71,6 +84,7 @@ add_library(globalmap_server_nodelet apps/globalmap_server_nodelet.cpp)
 target_link_libraries(globalmap_server_nodelet
   ${catkin_LIBRARIES}
   ${PCL_LIBRARIES}
+  yaml-cpp
   gtsam
   tbb
 )
